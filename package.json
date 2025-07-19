@@ -22,7 +22,8 @@
     "offline:gateway": "npx serverless offline --config serverless.gateway.yml",
     "deploy:country": "npx serverless deploy --config serverless.country.yml --force",
     "offline:country": "npx serverless offline --config serverless.country.yml",
-    "test:country": "jest --testPathPattern=apps/country"
+    "test:country": "jest --testPathPattern=apps/country",
+    "prepare": "husky"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.848.0",
@@ -56,7 +57,9 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^16.0.0",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
+    "lint-staged": "^16.1.2",
     "prettier": "^3.4.2",
     "serverless": "^4.17.1",
     "serverless-offline": "^14.4.0",
@@ -96,6 +99,10 @@
     "moduleNameMapper": {
       "^@app/database(|/.*)$": "<rootDir>/libs/database/src/$1",
       "^@app/entites(|/.*)$": "<rootDir>/libs/entites/src/$1"
+    },
+    "lint-staged": {
+      "apps/**/*.ts": "jest --bail --findRelatedTests",
+      "libs/**/*.ts": "jest --bail --findRelatedTests"
     }
   }
 }
