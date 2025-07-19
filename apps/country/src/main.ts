@@ -14,7 +14,7 @@ async function bootstrapServerless(): Promise<Handler> {
       forbidNonWhitelisted: true,
     }),
   );
-  
+
   app.useGlobalPipes(new ValidationPipe());
 
   await app.init();
@@ -39,7 +39,7 @@ async function startLocal() {
       forbidNonWhitelisted: true,
     }),
   );
-  
+
   app.useGlobalPipes(new ValidationPipe());
 
   const port = process.env.PORT ?? 3000;

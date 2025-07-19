@@ -113,7 +113,9 @@ describe('CountryService', () => {
       const updatedData = { name: 'Republic of Ecuador' };
       const updatedCountry = { id: 1, name: 'Republic of Ecuador', code: 'EC' };
       // findOne es llamado dentro de update, así que debemos mockearlo
-      dbMock.on(GetCommand).resolves({ Item: { id: 1, name: 'Ecuador', code: 'EC' } });
+      dbMock
+        .on(GetCommand)
+        .resolves({ Item: { id: 1, name: 'Ecuador', code: 'EC' } });
       // Simulamos la respuesta del comando Update
       dbMock.on(UpdateCommand).resolves({ Attributes: updatedCountry });
 
@@ -125,8 +127,10 @@ describe('CountryService', () => {
 
   describe('remove', () => {
     it('should call DeleteCommand and not throw an error', async () => {
-        // findOne es llamado dentro de remove
-      dbMock.on(GetCommand).resolves({ Item: { id: 1, name: 'Ecuador', code: 'EC' } });
+      // findOne es llamado dentro de remove
+      dbMock
+        .on(GetCommand)
+        .resolves({ Item: { id: 1, name: 'Ecuador', code: 'EC' } });
       // Simulamos que DeleteCommand funciona sin errores
       dbMock.on(DeleteCommand).resolves({});
 

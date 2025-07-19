@@ -21,7 +21,7 @@ import { CountryEntity } from '@app/entites';
 @Controller('countries')
 export class CountryController {
   constructor(private readonly countryService: CountryService) {
-    console.log('CountryService constructor called. ' + typeof countryService); 
+    console.log('CountryService constructor called. ' + typeof countryService);
   }
 
   @Post()

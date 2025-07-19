@@ -9,22 +9,28 @@ export class DatabaseService {
   private readonly countersTableName = 'Counters';
 
   constructor(private readonly configService: ConfigService) {
-    console.log('DatabaseService constructor called: creating DynamoDB client...');
+    console.log(
+      'DatabaseService constructor called: creating DynamoDB client...',
+    );
 
     if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
       const clientConfig = {
         region: this.configService.get<string>('AWS_REGION'),
         credentials: {
           accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY_ID'),
-          secretAccessKey: this.configService.get<string>('AWS_SECRET_ACCESS_KEY'),
+          secretAccessKey: this.configService.get<string>(
+            'AWS_SECRET_ACCESS_KEY',
+          ),
         },
       };
 
       if (!clientConfig.credentials.accessKeyId) {
         delete (clientConfig as any).credentials;
       }
-      
-      this.client = DynamoDBDocumentClient.from(new DynamoDBClient(clientConfig));
+
+      this.client = DynamoDBDocumentClient.from(
+        new DynamoDBClient(clientConfig),
+      );
     } else {
       this.client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
     }

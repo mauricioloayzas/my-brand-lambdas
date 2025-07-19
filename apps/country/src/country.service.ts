@@ -15,28 +15,25 @@ import { CountryEntity } from '@app/entites';
 export class CountryService {
   private readonly tableName: string;
   private readonly dynamoDB: DynamoDBDocumentClient;
-  
-  constructor(
-    private readonly databaseService: DatabaseService,
-  ) {
+
+  constructor(private readonly databaseService: DatabaseService) {
     this.dynamoDB = this.databaseService.client; // Obtenemos el cliente
     console.log('CountryService constructor called.');
-    
+
     const tableNameFromEnv = process.env.COUNTRIES_TABLE_NAME;
 
     if (!tableNameFromEnv) {
       throw new Error('COUNTRIES_TABLE_NAME environment variable is not set.');
     }
 
-    this.tableName = tableNameFromEnv; console.log("table in se3rvice " + this.tableName);
+    this.tableName = tableNameFromEnv;
+    console.log('table in se3rvice ' + this.tableName);
   }
 
   /**
    * Crea un nuevo país en la base de datos.
    */
-  async create(
-    countryData: Omit<CountryEntity, 'id'>,
-  ): Promise<CountryEntity> {
+  async create(countryData: Omit<CountryEntity, 'id'>): Promise<CountryEntity> {
     const newId = await this.databaseService.getNextId(this.tableName);
 
     const newCountry: CountryEntity = {

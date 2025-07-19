@@ -41,7 +41,7 @@ describe('CountryController', () => {
     it('should call countryService.create with the correct data', async () => {
       const createCountryDto: CreateCountryDto = { name: 'Peru', code: 'PE' };
       const expectedResult = { id: 3, ...createCountryDto };
-      
+
       // Arrange: Preparamos el mock
       mockCountryService.create.mockResolvedValue(expectedResult);
 
@@ -82,7 +82,9 @@ describe('CountryController', () => {
   describe('update()', () => {
     it('should call countryService.update with the correct data', async () => {
       const id = 1;
-      const updateCountryDto: UpdateCountryDto = { name: 'Republic of Ecuador' };
+      const updateCountryDto: UpdateCountryDto = {
+        name: 'Republic of Ecuador',
+      };
       const expectedResult = { id: 1, name: 'Republic of Ecuador', code: 'EC' };
       mockCountryService.update.mockResolvedValue(expectedResult);
 
@@ -92,8 +94,6 @@ describe('CountryController', () => {
       expect(result).toEqual(expectedResult);
     });
   });
-
-
 
   describe('remove()', () => {
     it('should call countryService.remove with the correct id', async () => {
