@@ -7,7 +7,6 @@ import { UpdateCountryDto } from './dto/update-country.dto';
 
 describe('CountryController', () => {
   let controller: CountryController;
-  let service: CountryService;
 
   // Mock del CountryService
   const mockCountryService = {
@@ -30,7 +29,6 @@ describe('CountryController', () => {
     }).compile();
 
     controller = module.get<CountryController>(CountryController);
-    service = module.get<CountryService>(CountryService);
   });
 
   it('should be defined', () => {
@@ -42,14 +40,12 @@ describe('CountryController', () => {
       const createCountryDto: CreateCountryDto = { name: 'Peru', code: 'PE' };
       const expectedResult = { id: 3, ...createCountryDto };
 
-      // Arrange: Preparamos el mock
       mockCountryService.create.mockResolvedValue(expectedResult);
 
-      // Act: Llamamos al método del controlador
       const result = await controller.create(createCountryDto);
 
-      // Assert: Verificamos que se llamó al servicio y que el resultado es el esperado
-      expect(service.create).toHaveBeenCalledWith(createCountryDto);
+      // CORREGIDO
+      expect(mockCountryService.create).toHaveBeenCalledWith(createCountryDto);
       expect(result).toEqual(expectedResult);
     });
   });
@@ -61,7 +57,8 @@ describe('CountryController', () => {
 
       const result = await controller.findAll();
 
-      expect(service.findAll).toHaveBeenCalled();
+      // CORREGIDO
+      expect(mockCountryService.findAll).toHaveBeenCalled();
       expect(result).toEqual(expectedResult);
     });
   });
@@ -74,7 +71,8 @@ describe('CountryController', () => {
 
       const result = await controller.findOne(id);
 
-      expect(service.findOne).toHaveBeenCalledWith(id);
+      // CORREGIDO
+      expect(mockCountryService.findOne).toHaveBeenCalledWith(id);
       expect(result).toEqual(expectedResult);
     });
   });
@@ -90,7 +88,11 @@ describe('CountryController', () => {
 
       const result = await controller.update(id, updateCountryDto);
 
-      expect(service.update).toHaveBeenCalledWith(id, updateCountryDto);
+      // CORREGIDO
+      expect(mockCountryService.update).toHaveBeenCalledWith(
+        id,
+        updateCountryDto,
+      );
       expect(result).toEqual(expectedResult);
     });
   });
@@ -98,12 +100,12 @@ describe('CountryController', () => {
   describe('remove()', () => {
     it('should call countryService.remove with the correct id', async () => {
       const id = 1;
-      // El método remove no devuelve nada, así que mockeamos una promesa vacía
       mockCountryService.remove.mockResolvedValue(undefined);
 
       await controller.remove(id);
 
-      expect(service.remove).toHaveBeenCalledWith(id);
+      // CORREGIDO
+      expect(mockCountryService.remove).toHaveBeenCalledWith(id);
     });
   });
 });
