@@ -1,0 +1,47 @@
+# serverless.country.yml
+org: mauloasan
+app: my-brand
+service: my-brand-lambdas-country
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  stage: dev
+  runtime: nodejs20.x
+  region: us-east-1
+  profile: mauloasan
+  environment:
+    COUNTRIES_TABLE_NAME: ${self:custom.tableName}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "dynamodb:PutItem"
+            - "dynamodb:GetItem"
+            - "dynamodb:UpdateItem"
+            - "dynamodb:DeleteItem"
+            - "dynamodb:Query"
+            - "dynamodb:Scan"
+          Resource:
+            - arn:aws:dynamodb:us-east-1:996197173188:table/${self:custom.tableName}
+            - arn:aws:dynamodb:us-east-1:996197173188:table/Counters
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+build:
+  esbuild: false
+
+custom:
+  tableName: "${sls:stage}-countries"
+
+functions:
+  api:
+    handler: apps/country/src/main.handler
+    events:
+      - http:
+          method: any
+          path: /{proxy+}

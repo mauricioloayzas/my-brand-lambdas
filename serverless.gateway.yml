@@ -1,0 +1,28 @@
+# serverless.gateway.yml
+org: mauloasan
+app: my-brand
+service: my-brand-lambdas-gateway
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  stage: dev
+  runtime: nodejs20.x
+  region: us-east-1
+  profile: mauloasan
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+
+build:
+  esbuild: false
+
+functions:
+  api:
+    handler: apps/api-gateway/src/main.handler
+    events:
+      - http:
+          method: any
+          path: /{proxy+}
