@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 
@@ -7,10 +8,26 @@ export class DatabaseService {
   public readonly client: DynamoDBDocumentClient;
   private readonly countersTableName = 'Counters';
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     console.log('DatabaseService constructor called: creating DynamoDB client...');
-    
-    this.client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+
+    if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
+      const clientConfig = {
+        region: this.configService.get<string>('AWS_REGION'),
+        credentials: {
+          accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY_ID'),
+          secretAccessKey: this.configService.get<string>('AWS_SECRET_ACCESS_KEY'),
+        },
+      };
+
+      if (!clientConfig.credentials.accessKeyId) {
+        delete (clientConfig as any).credentials;
+      }
+      
+      this.client = DynamoDBDocumentClient.from(new DynamoDBClient(clientConfig));
+    } else {
+      this.client = DynamoDBDocumentClient.from(new DynamoDBClient({}));
+    }
     console.log('DynamoDB client created successfully in DatabaseService.');
   }
 
