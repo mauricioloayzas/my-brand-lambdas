@@ -1,4 +1,4 @@
-// apps/country/src/country.service.ts
+// apps/language/src/language.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from '@app/database';
 import {
@@ -9,16 +9,16 @@ import {
   DeleteCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { CountryEntity } from '@app/entites/country.entity';
+import { LanguageEntity } from '@app/entites/language.entity';
 
 @Injectable()
-export class CountryService {
+export class LanguageService {
   private readonly tableName: string;
   private readonly dynamoDB: DynamoDBDocumentClient;
 
   constructor(private readonly databaseService: DatabaseService) {
     this.dynamoDB = this.databaseService.client; // Obtenemos el cliente
-    console.log('CountryService constructor called.');
+    console.log('LanguageService constructor called.');
 
     const tableNameFromEnv = process.env.COUNTRIES_TABLE_NAME;
 
@@ -31,41 +31,41 @@ export class CountryService {
   }
 
   /**
-   * Crea un nuevo país en la base de datos.
+   * Crea un nuevo language en la base de datos.
    */
-  async create(countryData: Omit<CountryEntity, 'id'>): Promise<CountryEntity> {
+  async create(languageData: Omit<LanguageEntity, 'id'>): Promise<LanguageEntity> {
     const newId = await this.databaseService.getNextId(this.tableName);
 
-    const newCountry: CountryEntity = {
+    const newLanguage: LanguageEntity = {
       id: newId,
-      ...countryData,
+      ...languageData,
     };
 
     const command = new PutCommand({
       TableName: this.tableName,
-      Item: newCountry,
+      Item: newLanguage,
     });
 
     await this.dynamoDB.send(command);
-    return newCountry;
+    return newLanguage;
   }
 
   /**
-   * Devuelve todos los países de la base de datos.
+   * Devuelve todos los languages de la base de datos.
    */
-  async findAll(): Promise<CountryEntity[]> {
+  async findAll(): Promise<LanguageEntity[]> {
     const command = new ScanCommand({
       TableName: this.tableName,
     });
 
     const result = await this.dynamoDB.send(command);
-    return (result.Items as CountryEntity[]) || [];
+    return (result.Items as LanguageEntity[]) || [];
   }
 
   /**
-   * Busca y devuelve un país por su ID.
+   * Busca y devuelve un language por su ID.
    */
-  async findOne(id: number): Promise<CountryEntity> {
+  async findOne(id: number): Promise<LanguageEntity> {
     const command = new GetCommand({
       TableName: this.tableName,
       Key: { id },
@@ -74,20 +74,20 @@ export class CountryService {
     const result = await this.dynamoDB.send(command);
 
     if (!result.Item) {
-      throw new NotFoundException(`Country with ID "${id}" not found.`);
+      throw new NotFoundException(`Language with ID "${id}" not found.`);
     }
 
-    return result.Item as CountryEntity;
+    return result.Item as LanguageEntity;
   }
 
   /**
-   * Actualiza los datos de un país existente.
+   * Actualiza los datos de un language existente.
    */
   async update(
     id: number,
-    updateData: Partial<Omit<CountryEntity, 'id'>>,
-  ): Promise<CountryEntity> {
-    // Asegura que el país exista antes de intentar actualizarlo
+    updateData: Partial<Omit<LanguageEntity, 'id'>>,
+  ): Promise<LanguageEntity> {
+    // Asegura que el language exista antes de intentar actualizarlo
     await this.findOne(id);
 
     const updateExpression: string[] = [];
@@ -119,14 +119,14 @@ export class CountryService {
     });
 
     const result = await this.dynamoDB.send(command);
-    return result.Attributes as CountryEntity;
+    return result.Attributes as LanguageEntity;
   }
 
   /**
-   * Elimina un país de la base de datos por su ID.
+   * Elimina un language de la base de datos por su ID.
    */
   async remove(id: number): Promise<void> {
-    // Asegura que el país exista antes de intentar borrarlo
+    // Asegura que el language exista antes de intentar borrarlo
     await this.findOne(id);
 
     const command = new DeleteCommand({
