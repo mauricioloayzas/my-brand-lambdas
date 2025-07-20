@@ -26,7 +26,7 @@ describe('LanguageService', () => {
   beforeEach(async () => {
     dbMock.reset();
     mockDatabaseService.getNextId.mockClear();
-    process.env.COUNTRIES_TABLE_NAME = 'test-languages-table';
+    process.env.LANGUAGES_TABLE_NAME = 'test-languages-table';
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [

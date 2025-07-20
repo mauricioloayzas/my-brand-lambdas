@@ -24,7 +24,7 @@
     "offline:country": "npx serverless offline --config serverless.country.yml",
     "test:country": "jest --testPathPattern=apps/country",
 
-    "deploy:language": "npx serverless deploy --config serverless.coulanguagentry.yml --force",
+    "deploy:language": "npx serverless deploy --config serverless.language.yml --force",
     "offline:language": "npx serverless offline --config serverless.language.yml",
     "test:language": "jest --testPathPattern=apps/language",
     "prepare": "husky"

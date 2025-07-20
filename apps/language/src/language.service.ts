@@ -20,10 +20,10 @@ export class LanguageService {
     this.dynamoDB = this.databaseService.client; // Obtenemos el cliente
     console.log('LanguageService constructor called.');
 
-    const tableNameFromEnv = process.env.COUNTRIES_TABLE_NAME;
+    const tableNameFromEnv = process.env.LANGUAGES_TABLE_NAME;
 
     if (!tableNameFromEnv) {
-      throw new Error('COUNTRIES_TABLE_NAME environment variable is not set.');
+      throw new Error('LANGUAGES_TABLE_NAME environment variable is not set.');
     }
 
     this.tableName = tableNameFromEnv;

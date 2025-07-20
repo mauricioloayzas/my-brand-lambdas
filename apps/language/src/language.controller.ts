@@ -17,8 +17,8 @@ import { UpdateLanguageDto } from './dto/update-language.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LanguageEntity } from '@app/entites/language.entity';
 
-@ApiTags('countries') // Agrupa los endpoints en la UI de Swagger
-@Controller('countries')
+@ApiTags('languages') // Agrupa los endpoints en la UI de Swagger
+@Controller('languages')
 export class LanguageController {
   constructor(private readonly languageService: LanguageService) {
     console.log('LanguageService constructor called. ' + typeof languageService);
